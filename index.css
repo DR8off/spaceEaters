@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    height: 100dvh;
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+.area {
+    margin-top: 5rem;
+    min-width: 60rem;
+    height: 40rem;
+    border: 2px solid white;
+    position: relative;
+    overflow: hidden;
+    background-image: url('assets/background.png');
+}
+.stars {
+    height: 80rem;
+    position: absolute;
+    width: 60rem;
+    background-image: url('assets/backgroundStars.png');
+    animation: movingStars 2s linear infinite;
+    bottom: 0;
+}
+@keyframes movingStars {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(40rem);
+    }
+}
+
+.player {
+    width: fit-content;
+    position: absolute;
+    transition: 0.2s;
+}
+.bullet {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
+.bullet img {
+    width: 1.5rem;
+}
+
+.lvlStartText {
+    animation: blink 1.5s infinite;
+    font-size: 4rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    animation: show 1s;
+    white-space: nowrap;
+}
+@keyframes show {
+    from {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+    }
+}
+.lvlEndText {
+    animation: blink 1.5s infinite;
+    font-size: 4rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    white-space: nowrap;
+}
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.hood {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 40rem;
+}
+.hood > * {
+    padding: 1rem;
+    color: white;
+    font-size: 2rem;
+}
+.hood-top {
+    justify-content: space-between;
+    display: flex;
+}
+.hood-top-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.hood-bottom-arrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+
+.button {
+    padding: 0.5rem;
+    border: 1px solid white;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-active {
+    background-color: white;
+    color: black;
+    transform: scale(0.9);
+}
