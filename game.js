@@ -11,7 +11,7 @@ let playerCanShoot = false
 // LvlData *******************************************************************************
 let currentLevel = 1
 let enemiesSpeed = 2000
-
+// new
 function handleEndAndStartLvl() {
     hideGameHood()
     playerCanShoot = false
