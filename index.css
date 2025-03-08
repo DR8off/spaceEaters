@@ -3,7 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+.new {
+    
+}
 body {
     background-color: black;
     display: flex;
