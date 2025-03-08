@@ -3,9 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-.new {
-    
-}
+
 body {
     background-color: black;
     display: flex;
@@ -118,6 +116,11 @@ body {
     gap: 1rem;
 }
 
+.hood-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
 .hood-bottom-arrows {
     display: flex;
     flex-direction: column;
@@ -139,4 +142,31 @@ body {
     background-color: white;
     color: black;
     transform: scale(0.9);
+}
+
+.gameScreen {
+    position: absolute;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    min-width: 60rem;
+    height: 40rem;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    color: white;
+    justify-content: space-between;
+}
+.startGame-button {
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+a {
+    color: blue;
+    font-size: 1.5rem;
 }

@@ -50,6 +50,9 @@ function handleEndAndStartLvl() {
     }, 13000)
 }
 function startGame() {
+    const gameScreen = document.querySelector('.gameScreen')
+    gameScreen.style.display = 'none'
+
     hideGameHood()
     playerCanShoot = false
     const startLvlModal = document.createElement('h1')
@@ -72,8 +75,10 @@ function startGame() {
         showGameHood()
     }, 6000)
 }
-// Starting game (1 lvl)
-startGame()
+
+// Starting game
+const startButton = document.querySelector('.startGame-button')
+startButton.addEventListener('click', startGame)
 
 // Sounds ********************************************************************************
 const music = new Audio('sounds/ost.mp3')
@@ -110,7 +115,7 @@ function createGameHood() {
     const arrowW = document.createElement('div')
     arrowW.textContent = 'W'
     arrowW.classList.add('button')
-    arrowW.classList.add('w')
+    arrowW.classList.add('arrow-w')
     arrowsTop.appendChild(arrowW)
     arrowsDOM.push(arrowW)
     
@@ -120,30 +125,40 @@ function createGameHood() {
         const arrowDOM = document.createElement('div')
         arrowDOM.textContent = arrow.toUpperCase()
         arrowDOM.classList.add('button')
-        arrowDOM.classList.add(arrow)
+        arrowDOM.classList.add(`arrow-${arrow}`)
         arrowsBottom.appendChild(arrowDOM)
     })
 
+    const spaceBarContainer = document.querySelector('.hood-bottom-space')
     const spacebar = document.createElement('div')
     spacebar.classList.add('button')
-    spacebar.classList.add('')
-    spacebar.style.width = '10rem !important'
+    spacebar.classList.add('spacebar')
+
+    spacebar.style.setProperty('width', '10rem', 'important')
     
-    container.appendChild(spacebar)
+    spaceBarContainer.appendChild(spacebar)
     container.appendChild(arrowsTop)
     container.appendChild(arrowsBottom)
 
     // Observing keydowns
     document.addEventListener('keydown', (e) => {
-        const pressedArrow = document.querySelector(`.${e.key}`)
+        const pressedArrow = document.querySelector(`.arrow-${e.key}`)
         if (pressedArrow) {
             pressedArrow.classList.add('button-active')
         }
+        if (e.keyCode === 32) {
+            const spacebar = document.querySelector('.spacebar')
+            spacebar.classList.add('button-active')
+        }
     })
     document.addEventListener('keyup', (e) => {
-        const pressedArrow = document.querySelector(`.${e.key}`)
+        const pressedArrow = document.querySelector(`.arrow-${e.key}`)
         if (pressedArrow) {
             pressedArrow.classList.remove('button-active')
+        }
+        if (e.keyCode === 32) {
+            const spacebar = document.querySelector('.spacebar')
+            spacebar.classList.remove('button-active')
         }
     })
      
@@ -419,4 +434,4 @@ function enemyShoot(enemy) {
 }
 
 
-// Доделать спейсбар, зучить гит, сделать экран поражения и звук поражения, сделать стартовый экран
+// Доделать спейсбар, сделать экран поражения и звук поражения, сделать стартовый экран
