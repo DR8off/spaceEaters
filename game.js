@@ -1,8 +1,14 @@
+// Space Eaters v1.0.0 -  the JavaScrit videogame!
+// #License
+// GNU General Public License
 
+// Hi! This is my silly project, or rather, my first game in JavaScript. The code may look a bit messy.
+// You can do whatever you want with this, but please adhere to the license.
+// Visit my website (https://dr8off.github.io/portfolio/) to find more of my projects.
+// By DR8 (https://github.com/DR8off) 
 
 // Game Area
 const gameArea = document.querySelector('.area')
-console.log(gameArea)
 
 // Game Settings
 let sounds = true
@@ -11,7 +17,7 @@ let playerCanShoot = false
 // LvlData *******************************************************************************
 let currentLevel = 1
 let enemiesSpeed = 2000
-// new
+
 function handleEndAndStartLvl() {
     hideGameHood()
     playerCanShoot = false
@@ -50,11 +56,8 @@ function handleEndAndStartLvl() {
     }, 13000)
 }
 function startGame() {
-    const gameScreen = document.querySelector('.gameScreen')
-    gameScreen.style.display = 'none'
+    handleResetGame()
 
-    hideGameHood()
-    playerCanShoot = false
     const startLvlModal = document.createElement('h1')
     startLvlModal.textContent = `Level ${currentLevel}`
     startLvlModal.classList.add('lvlStartText')
@@ -75,6 +78,18 @@ function startGame() {
         showGameHood()
     }, 6000)
 }
+function handleResetGame() {
+    hideGameOverScreen()
+    hideGameHood()
+    playerCanShoot = false
+    playerInfo.hp = 100
+    document.querySelector('progress').value = playerInfo.hp
+    const gameScreen = document.querySelector('.gameScreen')
+    gameScreen.style.display = 'none'
+}
+
+// Applying function to play again button on the endgame screen
+document.querySelector('.playAgain-button').addEventListener('click', startGame)
 
 // Starting game
 const startButton = document.querySelector('.startGame-button')
@@ -89,6 +104,16 @@ const enemyShootDefault = new Audio('sounds/enemyShoot_default.mp3')
 const enemyDeathDefault = new Audio('sounds/enemyDeath_default.mp3')
 
 // Player ********************************************************************************
+function showGameOverScreen() {
+    const gameOverScreen = document.querySelector('.gameOverScreen')
+    // showing screen
+    gameOverScreen.style.display = 'flex'
+}
+function hideGameOverScreen() {
+    const gameOverScreen = document.querySelector('.gameOverScreen')
+    // hiding screen
+    gameOverScreen.style.display = 'none'
+}
 function createGameHood() {
     // Level
     const currentLevelHood = document.querySelector('.hood-top-level')
@@ -178,7 +203,7 @@ function showGameHood() {
 const playerInfo = {
     playerX: gameArea.offsetWidth / 2,
     playerY: gameArea.offsetHeight / 2,
-    lives: 5,
+    hp: 100,
     damage: 10,
     speed: 10,
     bulletSpeed: 1,
@@ -193,6 +218,12 @@ function createPlayer() {
     playerSprite.src = playerInfo.sprite
     player.style.transform = `translate(${playerInfo.playerX}px, ${playerInfo.playerY}px)`
 
+    const playerHpBar = document.createElement('progress')
+    playerHpBar.max = 100
+    playerHpBar.value = playerInfo.hp
+    playerHpBar.style.position = 'absolute'
+
+    player.appendChild(playerHpBar)
     player.appendChild(playerSprite)
     gameArea.appendChild(player)    
 }
@@ -314,7 +345,7 @@ const enemies = [
         type: 'light',
         status: 'alive', 
         hp: 10, 
-        damage: 5,
+        damage: 10,
         speed: 1,
         enemyX: gameArea.offsetWidth / 2,
         enemyY: gameArea.offsetHeight / 8,
@@ -348,6 +379,7 @@ function createEnemy(enemy, index) {
 
     enemySprite.src = sprite
     enemyDiv.appendChild(enemySprite)
+    enemyDiv.classList.add('enemy')
     enemyDiv.classList.add(`damage-${damage}`)
     enemyDiv.classList.add(`hp-${hp}`)
     enemyDiv.style.transition = speed + 's'
@@ -396,7 +428,7 @@ function enemiesAI() {
             }
         })
     }
-    setTimeout(enemiesAI, 2000)
+    setTimeout(enemiesAI, 2000) //<--- literally the game speed
 }
 
 function transformEnemy(enemy, index) {
@@ -409,9 +441,9 @@ function enemyShoot(enemy) {
     const bulletSprite = document.createElement('img')
     bulletSprite.src = playerInfo.bulletSprite
     bulletSprite.style.width = '1.5rem'
-    bulletDOM.appendChild(bulletSprite)
     bulletDOM.style.transition = '1s'
     bulletDOM.style.position = 'absolute'
+    bulletDOM.appendChild(bulletSprite)
 
     bulletDOM.style.transform = `translate(${enemy.enemyX}px, ${enemy.enemyY}px)`
     gameArea.appendChild(bulletDOM)
@@ -419,6 +451,25 @@ function enemyShoot(enemy) {
     const timeoutId = setTimeout(() => {
         bulletDOM.style.transform = `translate(${enemy.enemyX}px, 100vh)`
     })
+
+    // Register player hit
+    if (enemy.enemyX === playerInfo.playerX) {
+        // Register player death
+        if (playerInfo.hp === 10) {
+            // Deleting all enemies from game area
+            document.querySelectorAll('.enemy').forEach(child => {
+                gameArea.removeChild(child)
+            })
+            playerCanShoot = false
+            isAllEnemiesAlive = false
+            showGameOverScreen()
+            return
+        }
+
+        playerInfo.hp -= enemy.damage
+        // Updating value in hp bar
+        document.querySelector('progress').value = playerInfo.hp
+    }
 
     if (sounds) {
         enemyShootDefault.play()
@@ -432,6 +483,3 @@ function enemyShoot(enemy) {
         }, 1000)
     }
 }
-
-
-// Доделать спейсбар, сделать экран поражения и звук поражения, сделать стартовый экран
