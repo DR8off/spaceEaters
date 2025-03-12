@@ -1,9 +1,10 @@
-// Space Eaters v1.0.0 -  the JavaScrit videogame!
+// Space Eaters v1.0.0 - the JavaScrit videogame!
 // #License
 // GNU General Public License
 
 // Hi! This is my silly project, or rather, my first game in JavaScript. The code may look a bit messy.
 // You can do whatever you want with this, but please adhere to the license.
+// This version can contain visual bugs.
 // Visit my website (https://dr8off.github.io/portfolio/) to find more of my projects.
 // By DR8 (https://github.com/DR8off) 
 
@@ -35,6 +36,7 @@ function handleEndAndStartLvl() {
 
     setTimeout(() => {
         currentLevel++
+        document.querySelector('.hood-top-level').textContent = `Lvl ${currentLevel}`
         const startLvlModal = document.createElement('h1')
         startLvlModal.textContent = `Level ${currentLevel}`
         startLvlModal.classList.add('lvlStartText')
@@ -222,6 +224,10 @@ function createPlayer() {
     playerHpBar.max = 100
     playerHpBar.value = playerInfo.hp
     playerHpBar.style.position = 'absolute'
+    playerHpBar.style.left = '50%'
+    playerHpBar.style.transform = 'translateX(-50%)'
+    playerHpBar.style.bottom = '-1rem'
+    playerHpBar.style.width = '5rem'
 
     player.appendChild(playerHpBar)
     player.appendChild(playerSprite)
@@ -273,9 +279,6 @@ function createPlayerBullet() {
             }
             return enemy
         })
-
-        // Apllying enemy death animation and sound
-
         
         // Cheking if all enemies dead
         if (levelEnemies.every(enemy => enemy.status === 'death')) {
