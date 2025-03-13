@@ -189,6 +189,7 @@ a {
 @media (max-width: 960px) {
     .area {
         min-width: 40rem;
+        margin-top: 0;
     }
     .stars {
         min-width: 40rem;
