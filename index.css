@@ -185,3 +185,18 @@ a {
     color: blue;
     font-size: 1.5rem;
 }
+
+@media (max-width: 960px) {
+    .area {
+        min-width: 40rem;
+    }
+    .stars {
+        min-width: 40rem;
+    }
+    .gameScreen {
+        min-width: 40rem;
+    }
+    .gameOverScreen {
+        min-width: 40rem;
+    }
+}

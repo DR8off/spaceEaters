@@ -212,6 +212,11 @@ const playerInfo = {
     sprite: 'assets/player_default.png',
     bulletSprite: 'assets/playerBullet_default.png'
 }
+// debugging the screen recycle so as not to lose the player
+window.addEventListener('resize', () => {
+    playerInfo.playerX = gameArea.offsetWidth / 2,
+    playerInfo.playerY = gameArea.offsetHeight / 2
+})
 function createPlayer() {
     const player = document.createElement('div')
     const playerSprite = document.createElement('img')
@@ -305,7 +310,7 @@ function transformPlayer() {
 function playerMoveAndShoot(key) {
     switch (key) {
         case 87:
-            if (playerInfo.playerY > 230) {
+            if (playerInfo.playerY > gameArea.offsetHeight - 400) {
                 playerInfo.playerY -= playerInfo.speed
                 transformPlayer()
             }
@@ -317,13 +322,13 @@ function playerMoveAndShoot(key) {
             }
             break
         case 65:
-            if (playerInfo.playerX > 10) {
+            if (playerInfo.playerX > 20) {
                 playerInfo.playerX -= playerInfo.speed
                 transformPlayer()
             }
             break   
         case 68:
-            if (playerInfo.playerX < 900) {
+            if (playerInfo.playerX < gameArea.offsetWidth - 80) {
                 playerInfo.playerX += playerInfo.speed
                 transformPlayer()
             }
@@ -417,7 +422,7 @@ function enemiesAI() {
                         }
                         break
                     case 2:
-                        if (enemy.enemyX < 800) {
+                        if (enemy.enemyX < gameArea.offsetWidth - 100) {
                             enemy.enemyX += 100
                             transformEnemy(enemy, index)
                         }
