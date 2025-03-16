@@ -207,7 +207,7 @@ const playerInfo = {
     playerY: gameArea.offsetHeight / 2,
     hp: 100,
     damage: 10,
-    speed: 10,
+    speed: 3,
     bulletSpeed: 1,
     sprite: 'assets/player_default.png',
     bulletSprite: 'assets/playerBullet_default.png'
@@ -307,41 +307,51 @@ function transformPlayer() {
     player.style.transform = `translate(${playerInfo.playerX}px, ${playerInfo.playerY}px)`
 }
 
-function playerMoveAndShoot(key) {
-    switch (key) {
-        case 87:
-            if (playerInfo.playerY > gameArea.offsetHeight - 400) {
-                playerInfo.playerY -= playerInfo.speed
-                transformPlayer()
-            }
-            break
-        case 83:
-            if (playerInfo.playerY < 570) {
-                playerInfo.playerY += playerInfo.speed
-                transformPlayer()
-            }
-            break
-        case 65:
-            if (playerInfo.playerX > 20) {
-                playerInfo.playerX -= playerInfo.speed
-                transformPlayer()
-            }
-            break   
-        case 68:
-            if (playerInfo.playerX < gameArea.offsetWidth - 80) {
-                playerInfo.playerX += playerInfo.speed
-                transformPlayer()
-            }
-            break
-        case 32:
-            if (playerCanShoot) {
-                createPlayerBullet()
-            }
-            break
-        default:
-            break             
+let keys = {}
+let isMoving = false
+
+document.addEventListener('keydown', function(event) {
+    keys[event.keyCode] = true  // Устанавливаем состояние нажатой клавиши
+    if (!isMoving) {
+        isMoving = true  // Запускаем цикл движения
+        movePlayer()
+    }
+})
+
+document.addEventListener('keyup', function(event) {
+    keys[event.keyCode] = false;  // Обнуляем состояние отпущенной клавиши
+    if (event.keyCode === 87 || event.keyCode === 83 || event.keyCode === 65 || event.keyCode === 68) {
+        // Останавливаем движение, если был отпущен один из клавиш перемещения
+        isMoving = false
+    }
+})
+
+function movePlayer() {
+    if (keys[87] && playerInfo.playerY > gameArea.offsetHeight - 400) { // W
+        playerInfo.playerY -= playerInfo.speed
+    }
+    if (keys[83] && playerInfo.playerY < 570) { // S
+        playerInfo.playerY += playerInfo.speed
+    }
+    if (keys[65] && playerInfo.playerX > 20) { // A
+        playerInfo.playerX -= playerInfo.speed
+    }
+    if (keys[68] && playerInfo.playerX < gameArea.offsetWidth - 80) { // D
+        playerInfo.playerX += playerInfo.speed
+    }
+    transformPlayer()
+    
+    if (isMoving) {
+        requestAnimationFrame(movePlayer)
     }
 }
+
+// Player shoot event
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 32 && playerCanShoot) { // Spacebar
+        createPlayerBullet()
+    }
+})
 
 document.addEventListener('keydown', e => {
     playerMoveAndShoot(e.keyCode)

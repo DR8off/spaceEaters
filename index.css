@@ -41,7 +41,7 @@ body {
 .player {
     width: fit-content;
     position: absolute;
-    transition: 0.2s;
+    
 }
 .bullet {
     width: fit-content;
